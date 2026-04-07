@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# venv
+.venv/
+venv/
+
+# env files / secrets
+.env
+.env.*
+*.key
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+
+# logs
+*.log
+
+# Node
+server/node_modules/
+node_modules/
