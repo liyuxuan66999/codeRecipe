@@ -4,7 +4,11 @@ from openai import AsyncOpenAI
 from dataclasses import dataclass
 from typing import Dict, Optional
 from constants.promptConstants import Prompt
-from constants.agentModels import DEFAULT_MODEL, GPT_5_NANO, DEFAULT_MAX_TOKENS
+from constants.agentModels import (
+    DEFAULT_MODEL, 
+    GPT_5_NANO, 
+    DEFAULT_MAX_TOKENS,
+)
 from agents.utils.getClient import getClient
 
 @dataclass(frozen=True)
@@ -15,7 +19,7 @@ class FileAnalyzeAgent:
 _agent_instances: Dict[str, FileAnalyzeAgent] = {}
 _agent_lock = asyncio.Lock()
 
-async def getAgent(model: str = DEFAULT_MODEL) -> FileAnalyzeAgent:
+async def getAgent(model: str = GPT_5_NANO) -> FileAnalyzeAgent:
     if model in _agent_instances:
         return _agent_instances[model]
     

@@ -14,13 +14,13 @@ singleFileAnalysisPayloadShape = """
 
 singleFileAnalysisPayloadSample = """
 {
-    "filePath": "/PalamidaScanDir/SWCSD-1234/source/lua/testes/manual.of",
+    "filePath": "/PalamidaScanDir/SWCSD-1234/source/amd_tee_sdk3.0/src/Tpm/include/HashTestData.h",
     "possibleSources": [
         {
-            "source": "https://github.com/lua/lua/tree/master/manual",
-            "license": ["MIT", "Apache-2.0"],
+            "source": "https://github.com/Microsoft/TSS.MSR/tree/main",
+            "license": ["MIT"],
             "score": 100,
-            "suggestedGroupName": "lua-lua v-u (MIT)"
+            "suggestedGroupName": "Microsoft-TSS.MSR v-u (MIT)"
         }
     ]
 }

@@ -1,3 +1,3 @@
-GPT_5_NANO = "gpt-5-nano"
+GPT_5_NANO = "gpt-5.4-nano"
 DEFAULT_MODEL = "GPT-oss-20B"
 DEFAULT_MAX_TOKENS = 6000
