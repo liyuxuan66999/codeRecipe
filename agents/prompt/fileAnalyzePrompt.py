@@ -1,9 +1,17 @@
-from dataclasses import dataclass
-from .promptTemplates import systemPromptDefaultTemplate, userPromptDefaultTemplate
+import json
+from typing import List
+
+from .promptTemplates import (
+    systemPromptBatchGetTemplate,
+    systemPromptDefaultTemplate,
+    userPromptBatchGetTemplate,
+    userPromptDefaultTemplate,
+)
 from utils.formatter import toBullets
 from constants.promptConstants import wordingTemplateEnum, Prompt
+from constants.baseModels import FileAnalysisRequest
 
-def getPrompts(
+def getPromptsForSingleFile(
         filePath: str,
         licenses: list[str] = None,
         copyrights: list[str] = None
@@ -20,4 +28,24 @@ def getPrompts(
     )
     prompt = Prompt(system=system_prompt, user=user_prompt)
     print("created prompt")
+    return prompt
+
+
+def getPromptsForBatchFiles(
+    files: List[FileAnalysisRequest]
+) -> Prompt:
+    print("creating batch prompt")
+
+    files_payload = json.dumps(
+        [file.model_dump() for file in files],
+        indent=2
+    )
+
+    system_prompt = systemPromptBatchGetTemplate
+    user_prompt = userPromptBatchGetTemplate.format(
+        filesPayload=files_payload
+    )
+
+    prompt = Prompt(system=system_prompt, user=user_prompt)
+    print("created batch prompt")
     return prompt
