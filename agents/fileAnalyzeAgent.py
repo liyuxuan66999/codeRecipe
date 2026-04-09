@@ -1,44 +1,36 @@
 import asyncio
-import os
 import json
-from dotenv import load_dotenv
-from openai import OpenAI,AsyncOpenAI
+from openai import AsyncOpenAI
 from dataclasses import dataclass
 from typing import Dict, Optional
 from constants.promptConstants import Prompt
-
-DEFAULT_MODEL = "gpt-5-nano"
+from constants.agentModels import DEFAULT_MODEL, GPT_5_NANO, DEFAULT_MAX_TOKENS
+from agents.utils.getClient import getClient
 
 @dataclass(frozen=True)
 class FileAnalyzeAgent:
     client: AsyncOpenAI
     model: str
 
-_agent_instance: Optional[FileAnalyzeAgent] = None
+_agent_instances: Dict[str, FileAnalyzeAgent] = {}
 _agent_lock = asyncio.Lock()
 
 async def getAgent(model: str = DEFAULT_MODEL) -> FileAnalyzeAgent:
-    global _agent_instance
-    if _agent_instance is not None:
-        return _agent_instance
+    if model in _agent_instances:
+        return _agent_instances[model]
     
     async with _agent_lock:
-        if _agent_instance is None:
-            print("loading API keys")
-            load_dotenv(override=True)
-            api_key = os.getenv("OPENAI_API_KEY")
-            if not api_key:
-                raise RuntimeError("OPENAI_API_KEY is missing. Check your .env or environment variables.")
+        if model not in _agent_instances:
             print("invoking FileAnalyzeAgent")
-            client = AsyncOpenAI(api_key=api_key)
+            client = getClient(model=model)
 
-            _agent_instance = FileAnalyzeAgent(
+            _agent_instances[model] = FileAnalyzeAgent(
                 client=client,
                 model=model
             )
             print("created client")
 
-    return _agent_instance
+    return _agent_instances[model]
 
 async def analyzeFile(
     agent: FileAnalyzeAgent,
@@ -52,10 +44,12 @@ async def analyzeFile(
         print("Sending messages to OpenAI API")
         response = await agent.client.chat.completions.create(
             model=agent.model,
+            max_completion_tokens=DEFAULT_MAX_TOKENS,
             messages=messages,
         )
         print("OpenAI API responded")
         assistant_message = response.choices[0].message.content
+        print(assistant_message)
         assistant_message_json = json.loads(assistant_message)
         return {
             "status": "success",

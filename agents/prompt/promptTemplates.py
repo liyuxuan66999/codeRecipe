@@ -9,8 +9,11 @@ Use the provided information to guide your analysis:
 2. licenses (optional): this is a list of licenses that are relevant to this file. You can use the license information as a hint to determine the possible source of the file. 
 3. copyrights (optional): this is a list of copyrights that are relevant to this file. You can use the copyright information as a hint to determine the possible source of the file.
 
-Your should respond in JSON which includes:
-possibleSources of the provided file. Each possible source should include:
+Your should respond by following the rules below:
+1. Return only valid JSON.
+2. Do not wrap the JSON in markdown code fences.
+3. Do not include any explanation outside the JSON.
+4. In the Json payload should include possibleSources of the provided file. Each possible source should include:
 - source: the URL of the possible source.
 - license: the license of the possible source (if available).
 - score: confident score (0-100). Tell me how confident your are about the fact that the file is from this source.
